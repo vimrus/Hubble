@@ -1,0 +1,259 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    color: #444443;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #545454;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin: 0.67rem 0;
+}
+h2 {
+    font-size: 1.3rem;
+    margin: 0.83rem 0;
+}
+h3 {
+    font-size: 1.17rem;
+    margin: 1rem 0;
+}
+h4,
+h5,
+h6 {
+    font-size: 1rem;
+    margin: 1.6rem 0 1em 0;
+}
+h6 {
+    font-weight: 500;
+}
+p {
+    margin-top: 0;
+    margin-bottom: 1.24rem;
+}
+li, p {
+    word-break: break-word;
+}
+a {
+    color: #111;
+    word-wrap: break-word;
+    -webkit-text-decoration-color: rgba(0, 0, 0, 0.4);
+    text-decoration-color: rgba(0, 0, 0, 0.4);
+}
+a:hover {
+    color: #555;
+    -webkit-text-decoration-color: rgba(0, 0, 0, 0.6);
+    text-decoration-color: rgba(0, 0, 0, 0.6);
+}
+h1 a, h2 a, h3 a {
+    text-decoration: none;
+}
+strong,
+b {
+    font-weight: 700;
+    color: #222223;
+}
+em,
+i {
+    font-style: italic;
+    color: #222223;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 0.2rem 0;
+}
+a img {
+    /* Remove border on IE */
+    border: none;
+}
+figure {
+    position: relative;
+    clear: both;
+    outline: 0;
+    margin: 10px 0 30px;
+    padding: 0;
+    min-height: 100px;
+}
+figure img {
+    display: block;
+    max-width: 100%;
+    margin: auto auto 4px;
+    box-sizing: border-box;
+}
+figure figcaption {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    margin-top: 10px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #666665;
+}
+iframe {
+    width: 100%;
+    min-height: 220px;
+}
+video {
+    width: 100%;
+}
+figure figcaption a {
+    text-decoration: none;
+    color: #666665;
+}
+hr {
+    display: block;
+    width: 14%;
+    margin: 40px auto 34px;
+    border: 0 none;
+    border-top: 3px solid #dededc;
+}
+blockquote {
+    margin: 0 0 1.64rem 0;
+    border-left: 3px solid #dadada;
+    padding-left: 12px;
+    color: #666664;
+}
+blockquote a {
+    color: #666664;
+}
+ul,
+ol {
+    margin: 0 0 24px 6px;
+    padding-left: 16px;
+}
+ul {
+    list-style-type: square;
+}
+ol {
+    list-style-type: decimal;
+}
+li {
+    margin-bottom: 0.2rem;
+}
+li ul,
+li ol {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 14px;
+}
+li ul {
+    list-style-type: disc;
+}
+li ul ul {
+    list-style-type: circle;
+}
+li p {
+    margin: 0.4rem 0 0.6rem;
+}
+.unstyled {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+code,
+tt {
+    color: #808080;
+    font-size: 0.96rem;
+    background-color: #f9f9f7;
+    padding: 1px 2px;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+pre {
+    margin: 1.64rem 0;
+    padding: 7px;
+    border: none;
+    border-left: 3px solid #dadada;
+    padding-left: 10px;
+    overflow: auto;
+    line-height: 1.5;
+    font-size: 0.96rem;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    color: #4c4c4c;
+    background-color: #f9f9f7;
+    width: 100%;
+}
+pre code,
+pre tt {
+    color: #4c4c4c;
+    border: none;
+    background: none;
+    padding: 0;
+}
+table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.96rem;
+    box-sizing: border-box;
+}
+th,
+td {
+    text-align: left;
+    padding: 4px 8px 4px 10px;
+    border: 1px solid #dadada;
+}
+td {
+    vertical-align: top;
+}
+tr:nth-child(even) {
+    background-color: #efefee;
+}
+iframe {
+    display: block;
+    max-width: 100%;
+    margin-bottom: 30px;
+}
+figure iframe {
+    margin: auto;
+}
+table pre {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+@media (min-width: 1100px) {
+    blockquote {
+        margin-left: -24px;
+        padding-left: 20px;
+        border-width: 4px;
+    }
+    blockquote blockquote {
+        margin-left: 0;
+    }
+}
+
+[lang^="zh"] p,
+[lang^="ja"] p {
+    text-align: justify;
+    text-justify: inter-ideographic;
+}
+
+[lang^="zh"] em,
+[lang^="ja"] em {
+    font-style: normal;
+    font-family: Baskerville,Georgia,Kaiti SC,STKaiti,AR PL UKai CN,AR PL UKai HK,AR PL UKai TW,AR PL UKai TW MBE,AR PL KaitiM GB,KaiTi,KaiTi_GB2312,DFKai-SB,TW\\-Kai,serif;
+    -webkit-text-emphasis: dot #555;
+    text-emphasis: dot #555;
+    -webkit-text-emphasis-position: under;
+    text-emphasis-position: under;
+}
+
+.hubble-title {
+    margin-top: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+.hubble-from {
+    font-size: 0.8rem;
+    text-align: center;
+    color: #545454;
+}
+
