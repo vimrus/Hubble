@@ -251,9 +251,8 @@ table pre {
     font-size: 1.8rem;
     text-align: center;
 }
-.hubble-from {
+.hubble-from, .hubble-time {
     font-size: 0.8rem;
     text-align: center;
     color: #545454;
 }
-

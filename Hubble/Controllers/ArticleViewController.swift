@@ -45,7 +45,8 @@ class ArticleViewController: SwipeRightToPopViewController {
         }
 
         // 文章页面模板
-        let html = "<html><head><meta name='viewport' content='width=device-width, minimal-ui'><style>" + style + "</style></head><body><h1 class='hubble-title'>" + article.title + "</h1><p class='hubble-from'><a href='" + article.url + "'>" + plugin.name + "</a></p><div>" + article.content + "</div></body></html>"
+        let time = TimeInterval(article.addtime).toString(format: "yyyy-MM-dd HH:mm")
+        let html = "<html><head><meta name='viewport' content='width=device-width, minimal-ui'><style>" + style + "</style></head><body><h1 class='hubble-title'>" + article.title + "</h1><p class='hubble-from'><a href='" + article.url + "'>" + plugin.name + "</a></p><div>" + article.content + "</div><p class='hubble-time'>" + time + "</p></body></html>"
         webview.loadHTMLString(html, baseURL: URL(string: article.url))
 
         // toolbar
