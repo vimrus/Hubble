@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		275E36DF8712F175F4250540 /* Pods_Hubble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FA85AA3DC61C94A7AB2EB4D /* Pods_Hubble.framework */; };
+		C95196261F814FAF00A0A9B3 /* FeedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95196251F814FAF00A0A9B3 /* FeedListViewController.swift */; };
 		C955DD811F81320B0089662B /* MeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C955DD801F81320B0089662B /* MeViewCell.swift */; };
 		C955DD831F8143360089662B /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = C955DD821F8143360089662B /* API.swift */; };
 		C955DD851F8143DB0089662B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C955DD841F8143DB0089662B /* WebView.swift */; };
@@ -62,6 +63,7 @@
 		5AAED966C177A50D60E817F4 /* Pods-Hubble.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hubble.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hubble/Pods-Hubble.debug.xcconfig"; sourceTree = "<group>"; };
 		861D63A1235CA3CA3CB8CC52 /* Pods-Hubble.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hubble.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hubble/Pods-Hubble.release.xcconfig"; sourceTree = "<group>"; };
 		9FA85AA3DC61C94A7AB2EB4D /* Pods_Hubble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hubble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C95196251F814FAF00A0A9B3 /* FeedListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedListViewController.swift; sourceTree = "<group>"; };
 		C955DD801F81320B0089662B /* MeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewCell.swift; sourceTree = "<group>"; };
 		C955DD821F8143360089662B /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		C955DD841F8143DB0089662B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 		C97033BD1F8129FC0080E621 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				C95196251F814FAF00A0A9B3 /* FeedListViewController.swift */,
 				C97033BE1F812A2E0080E621 /* FeedViewController.swift */,
 			);
 			path = Feed;
@@ -484,6 +487,7 @@
 				C97033881F81216B0080E621 /* Service.swift in Sources */,
 				C97033BA1F8128880080E621 /* ArticleViewController.swift in Sources */,
 				C97033671F811C060080E621 /* SlideAnimatedTransitioning.swift in Sources */,
+				C95196261F814FAF00A0A9B3 /* FeedListViewController.swift in Sources */,
 				C97033921F81223F0080E621 /* ThemeSelector.swift in Sources */,
 				C970339F1F8124340080E621 /* TitleViewCell.swift in Sources */,
 				C955DD851F8143DB0089662B /* WebView.swift in Sources */,

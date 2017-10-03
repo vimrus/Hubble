@@ -1,51 +1,28 @@
 //
-//  FeedViewController.swift
-//  Hubble
+//  ViewController.swift
+//  world
 //
-//  Created by vimrus on 2017/10/1.
-//  Copyright © 2017年 Hubble. All rights reserved.
-//
+//  Created by 朱金勇 on 2017/6/12.
+//  Copyright © 2017年 vimrus. All rights reserved.
 
 import UIKit
 
-class FeedViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
-    let TITLE_CELL_ID = "FeedTitleViewCell"
-    let IMAGE_CELL_ID = "FeedImageViewCell"
-    var articles: [Article]?
+class FeedViewController: BaseViewController, SMSwipeableTabViewControllerDelegate {
     var owner: String!
     var repo: String!
     var plugin: Plugin!
-
-    var tableView: UITableView = {
-        var tableView = UITableView()
-        tableView.showsVerticalScrollIndicator = false
-
-        tableView.layoutMargins = UIEdgeInsets.zero
-        tableView.separatorInset = UIEdgeInsets.zero
-        tableView.tableFooterView = UIView(frame: CGRect.zero)
-        tableView.separatorStyle = .none
-        tableView.layoutMargins = UIEdgeInsets.zero
-        tableView.separatorInset = UIEdgeInsets.zero
-        tableView.tableFooterView = UIView(frame: CGRect.zero)
-        tableView.showsVerticalScrollIndicator = false
-
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 100
-
-        return tableView
-    }()
+    var config: PluginConfig!
 
     init(owner: String, repo: String) {
         super.init(nibName: nil, bundle: nil)
         self.owner = owner
         self.repo  = repo
 
-        tableView.register(TitleImageViewCell.self, forCellReuseIdentifier: IMAGE_CELL_ID)
-        tableView.register(TitleViewCell.self, forCellReuseIdentifier: TITLE_CELL_ID)
-        tableView.delegate = self
-        tableView.dataSource = self
-
         hidesBottomBarWhenPushed = true
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -53,6 +30,7 @@ class FeedViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         view.theme_backgroundColor = globalBackgroundColorPicker
 
         plugin = PluginModel.get(code: owner + "/" + repo)
+        config = PluginManager().getConfig(owner: owner, repo: repo)
 
         // 导航栏标题
         let navView = UIView()
@@ -87,14 +65,48 @@ class FeedViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         let rightButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(alert))
         navigationItem.rightBarButtonItem = rightButton
 
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { (make) -> Void in
-            make.left.right.width.height.equalTo(view)
-        }
-        refresh()
+        if config.channels.count > 0 {
+            var titleBarDataSource = [String]()
+            for channel in config.channels {
+                titleBarDataSource.append(channel["name"] as! String)
+            }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: NSNotification.Name.refresh, object: nil)
+            let swipeableView = SMSwipeableTabViewController()
+            swipeableView.titleBarDataSource = titleBarDataSource
+            swipeableView.delegate = self
+            swipeableView.viewFrame = CGRect(x: 0.0, y: 64.0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height-64.0)
+
+            swipeableView.buttonAttributes = [
+                SMBackgroundColorAttribute: UIColor.clear,
+                SMAlphaAttribute: 0.8 as AnyObject,
+                SMButtonHideTitleAttribute: false as AnyObject,
+                SMFontAttribute: UIFont(name: ".SFUIText-Medium", size: 17)!
+            ]
+            swipeableView.selectionBarHeight = 3.0 //For thin line
+            swipeableView.segementBarHeight = 40.0 //Default is 40.0
+            swipeableView.buttonPadding = 8.0 //Default is 8.0
+
+            self.addChildViewController(swipeableView)
+            self.view.addSubview(swipeableView.view)
+            swipeableView.didMove(toParentViewController: self)
+        } else {
+            let feedListViewController = FeedListViewController(owner: owner, repo: repo, channel: "")
+            self.addChildViewController(feedListViewController)
+            self.view.addSubview(feedListViewController.view)
+        }
     }
+
+    func didLoadViewControllerAtIndex(_ index: Int) -> UIViewController {
+        var channel = ""
+        if config.channels[index]["key"] is String {
+            channel = config.channels[index]["key"] as! String
+        } else if config.channels[index]["key"] is Int {
+            channel = String(config.channels[index]["key"] as! Int)
+        }
+        let vc = FeedListViewController(owner: owner, repo: repo, channel: channel)
+        return vc
+    }
+
 
     @objc func alert() {
         let items = [AlertSheetItem(title: "取消订阅", style: .special), AlertSheetItem(title: "清空历史", style: .light)]
@@ -118,46 +130,5 @@ class FeedViewController: BaseViewController, UITableViewDelegate, UITableViewDa
             NSLog("didClicked Cancel")
         }
         sheet.show()
-    }
-
-    @objc func refresh() {
-        ArticleModel.getList(owner: owner, repo: repo) { articles in
-            self.articles = articles
-        }
-
-        tableView.reloadData()
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if articles![indexPath.row].image != "" {
-            let cell = tableView.dequeueReusableCell(withIdentifier: IMAGE_CELL_ID, for: indexPath) as! TitleImageViewCell
-            cell.bind(articles![indexPath.row])
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: TITLE_CELL_ID, for: indexPath) as! TitleViewCell
-            cell.bind(articles![indexPath.row])
-            return cell
-        }
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.theme_backgroundColor = globalBackgroundColorPicker
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let article = articles?[indexPath.row]
-        let articleViewController = ArticleViewController((article?.id)!)
-        self.navigationController?.pushViewController(articleViewController, animated: true)
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let list = articles {
-            return list.count
-        }
-        return 0
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

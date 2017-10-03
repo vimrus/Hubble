@@ -17,6 +17,7 @@ class Article: Object {
     @objc dynamic var summary = ""
     @objc dynamic var url = ""
     @objc dynamic var image = ""
+    @objc dynamic var channel = ""
     @objc dynamic var addtime = 0
     @objc dynamic var readtime = 0
     @objc dynamic var startime = 0
@@ -41,14 +42,19 @@ class Article: Object {
 }
 
 class ArticleModel {
-    class func insert(id: String, plugin: String, title: String, content: String, summary: String, image: String, url: String) {
+    class func insert(id: String, plugin: String, title: String, content: String, summary: String, image: String, url: String, channel: String) {
         try! RealmManager.sharedInstance.write {
-            RealmManager.sharedInstance.create(Article.self, value: ["id": "\(plugin)/\(id)", "plugin": plugin, "title": title, "content": content, "summary": summary, "image": image,"url": url, "addtime": Int(Date().timeIntervalSince1970)], update: true)
+            RealmManager.sharedInstance.create(Article.self, value: ["id": "\(plugin)/\(id)", "plugin": plugin, "title": title, "content": content, "summary": summary, "image": image, "url": url, "channel": channel, "addtime": Int(Date().timeIntervalSince1970)], update: true)
         }
     }
 
     class func getList(owner: String, repo: String, completion: ([Article]) -> Void) {
         let articles = Array(RealmManager.sharedInstance.objects(Article.self).filter("plugin = '\(owner)/\(repo)'").sorted(byKeyPath: "addtime", ascending: false))
+        completion(articles)
+    }
+
+    class func getList(owner: String, repo: String, channel: String, completion: ([Article]) -> Void) {
+        let articles = Array(RealmManager.sharedInstance.objects(Article.self).filter("plugin = '\(owner)/\(repo)' and channel = '\(channel)'").sorted(byKeyPath: "addtime", ascending: false))
         completion(articles)
     }
 

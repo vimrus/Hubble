@@ -72,7 +72,7 @@ class Engine {
                 let content = dict["content"] as? String ?? ""
                 let summary = dict["summary"] as? String ?? String(content.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil).prefix(50))
 
-                ArticleModel.insert(id: dict["id"] as? String ?? "", plugin: plugin, title: dict["title"] as? String ?? "", content: content, summary: summary, image: dict["image"] as? String ?? "", url: dict["url"] as? String ?? "")
+                ArticleModel.insert(id: dict["id"] as? String ?? "", plugin: plugin, title: dict["title"] as? String ?? "", content: content, summary: summary, image: dict["image"] as? String ?? "", url: dict["url"] as? String ?? "", channel: dict["channel"] as? String ?? "")
                 NotificationCenter.post(name: .refresh)
             }
         }

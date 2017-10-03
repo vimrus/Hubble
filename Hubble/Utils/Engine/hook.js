@@ -7,13 +7,16 @@ var console = {
 var articles = {
 	append: function(article) {
         if (typeof article.id == 'number') {
-            article.id = article.id.toString()
+            article.id = article.id.toString();
+        }
+        if (typeof article.channel == 'number') {
+            article.channel = article.channel.toString();
         }
 		articleAppend(article);
 	},
 	get: function(field, value, callback) {
         if (field === 'id' && typeof value === 'number') {
-            value = value.toString()
+            value = value.toString();
         }
         articleGet(field, value, function(article) {
             callback(article);

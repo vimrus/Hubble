@@ -14,7 +14,7 @@ class MeViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "我"
+        navigationItem.title = "我的"
 
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none;
         tableView.register(MeViewCell.self, forCellReuseIdentifier: CELL_ID)

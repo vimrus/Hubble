@@ -20,14 +20,16 @@ protocol DownloadDelegate{
 class PluginConfig: Mappable {
     var site = ""
     var style = ""
+    var channels = [[String: Any]]()
 
     required convenience init?(map: Map) {
         self.init()
     }
-
+    
     func mapping(map: Map) {
-        site  <- map["site"]
-        style <- map["style"]
+        site     <- map["site"]
+        style    <- map["style"]
+        channels <- map["channels"]
     }
 }
 

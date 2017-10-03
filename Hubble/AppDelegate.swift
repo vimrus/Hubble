@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
         ThemeManager.setTheme(index: 0)
 
         self.window = UIWindow(frame:UIScreen.main.bounds)
@@ -36,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let meController = UINavigationController(rootViewController: MeViewController())
         meController.tabBarItem = UITabBarItem(
-            title: "我",
+            title: "我的",
             image: UIImage(named: "me"),
             selectedImage: UIImage(named: "me_active")?.withRenderingMode(UIImageRenderingMode.alwaysOriginal))
 

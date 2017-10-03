@@ -1,13 +1,5 @@
 //
 //  SMSwipeableTabViewController.swift
-//  Hubble
-//
-//  Created by vimrus on 2017/10/1.
-//  Copyright © 2017年 Hubble. All rights reserved.
-//
-
-//
-//  SMSwipeableTabViewController.swift
 //  SMSwipeableTabView
 //
 //  Created by Sahil Mahajan on 21/12/15.
@@ -15,7 +7,6 @@
 //
 
 import UIKit
-
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -40,7 +31,6 @@ fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         return !(lhs < rhs)
     }
 }
-
 
 
 /// Attribute Dictionary Keys. These keys are used to customize the UI elements of View.
@@ -80,9 +70,6 @@ public let SMButtonHighlightedImagesAttribute = "kButtonHighlightedImageAttribut
 /// Take Bool as value. Set title label of tab bar button hidden.
 public let SMButtonHideTitleAttribute = "kButtonShowTitleAttribute" // Set Bool instance
 
-/// Swipe constant
-public var kSelectionBarSwipeConstant: CGFloat = 4.5
-
 public protocol SMSwipeableTabViewControllerDelegate {
     func didLoadViewControllerAtIndex(_ index: Int) -> UIViewController
 }
@@ -90,10 +77,10 @@ public protocol SMSwipeableTabViewControllerDelegate {
 open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate {
 
     /// To set the height of segment bar(Top swipable tab bar).
-    open var segementBarHeight: CGFloat = 44.0
+    open var segementBarHeight: CGFloat = 40.0
 
     /// To set the margin beteen the buttons or tabs in the scrollable tab bar
-    open var buttonPadding: CGFloat = 8.0
+    open var buttonPadding: CGFloat = 9.0
 
     /// To set the fixed width of the button/tab in the tab bar
     open var buttonWidth: CGFloat?
@@ -101,27 +88,28 @@ open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerD
     /** To set the height of the selection bar
      Selection bar can be seen under the tab
      */
-    open var selectionBarHeight: CGFloat = 4.0
+    open var selectionBarHeight: CGFloat = 1.8
+    open var selectionBarWidth: CGFloat = 20.0
 
     /** To set the background color of the tab bar.
      Default color is blue color. You can change the color as per your need.
      */
-    open let defaultSegmentBarBgColor = UIColor.blue
+    open let defaultSegmentBarBgColor = UIColor.white
 
     /** To set the background color of the selection bar.
      Default color is red color. You can change the color as per your need.
      */
-    open let defaultSelectionBarBgColor = UIColor.red
+    open let defaultSelectionBarBgColor = fixColor(0x393939)
 
     /** To set the background color of the selection bar.
      Default color is red color. You can change the color as per your need.
      */
-    open let defaultSelectedButtonForegroundColor = UIColor.white
+    open let defaultSelectedButtonForegroundColor = fixColor(0x393939)
 
     /** To set the background color of the selection bar.
      Default color is red color. You can change the color as per your need.
      */
-    open let defaultUnSelectedButtonForegroundColor = UIColor.gray
+    open let defaultUnSelectedButtonForegroundColor = fixColor(0xa0a0a0)
 
     ///Dictionary to set button attributes. User can change the titleFont, titleFontColor, Normal Image, Selected Image etc.
     /**
@@ -182,14 +170,13 @@ open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerD
             self.view.frame = frame
         }
 
-        segmentBarView.layer.shadowColor = UIColor.gray.cgColor
-        segmentBarView.layer.masksToBounds = false
-        segmentBarView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        segmentBarView.layer.shadowRadius = 3.0
-        segmentBarView.layer.shadowOpacity = 0.5
+        //segmentBarView.layer.shadowColor = UIColor.gray.cgColor
+        //segmentBarView.layer.masksToBounds = false
+        //segmentBarView.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        //segmentBarView.layer.shadowRadius = 3.0
+        //segmentBarView.layer.shadowOpacity = 0.5
 
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        self.pageViewController?.automaticallyAdjustsScrollViewInsets = true
 
         if let startingViewController = viewControllerAtIndex(0) {
             let viewControllers = [startingViewController]
@@ -257,6 +244,7 @@ open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerD
         setupSegmentBarButtons()
         self.view.addSubview(segmentBarView)
         setupSelectionBar()
+        updateButtonColorOnSelection()
     }
 
 
@@ -291,11 +279,10 @@ open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerD
                         segmentButton.setImage(UIImage(named: highlightedImages[i]), for: .selected)
                     }
 
-                    if let hideTitle = attributes[SMButtonHideTitleAttribute] as? Bool, hideTitle == true{
+                    if let hideTitle = attributes[SMButtonHideTitleAttribute] as? Bool, hideTitle == true {
                         segmentButton.titleLabel?.isHidden = true
                         segmentButton.setTitle("", for: UIControlState())
-                    }
-                    else{
+                    } else {
                         segmentButton.titleLabel?.isHidden = false
                     }
 
@@ -303,10 +290,10 @@ open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerD
                         segmentButton.titleLabel?.font = font
                     }
 
-                    if let foregroundColor = attributes[SMForegroundColorAttribute] as? UIColor, currentPageIndex == i{
+                    if let foregroundColor = attributes[SMForegroundColorAttribute] as? UIColor, currentPageIndex == i {
                         segmentButton.setTitleColor(foregroundColor, for: UIControlState())
                     }
-                    else if let unSelectedForegroundColor = attributes[SMUnselectedColorAttribute] as? UIColor, currentPageIndex != i{
+                    else if let unSelectedForegroundColor = attributes[SMUnselectedColorAttribute] as? UIColor, currentPageIndex != i {
                         segmentButton.setTitleColor(unSelectedForegroundColor, for: UIControlState())
                     }
                     else {
@@ -358,15 +345,12 @@ open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerD
 
     fileprivate func setupSelectionBarFrame(_ index: Int) {
         if buttonsFrameArray.count > 0 {
-            let previousButtonX = index > 0 ? buttonsFrameArray[index-1].origin.x : 0.0
-            let previousButtonW = index > 0 ? buttonsFrameArray[index-1].size.width : 0.0
-
-            selectionBar.frame = CGRect(x: previousButtonX + previousButtonW + buttonPadding, y: segementBarHeight - selectionBarHeight, width: buttonsFrameArray[index].size.width, height: selectionBarHeight)
+            selectionBar.frame = CGRect(x: buttonsFrameArray[index].origin.x + (buttonsFrameArray[index].size.width-selectionBarWidth)/2, y: segementBarHeight - selectionBarHeight, width: selectionBarWidth, height: selectionBarHeight)
         }
     }
 
     fileprivate func getWidthForText(_ text: String) -> CGFloat {
-        return buttonWidth ?? ceil((text as NSString).size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17.0)]).width)
+        return buttonWidth ?? ceil((text as NSString).size(withAttributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16.0)]).width)
     }
 
     fileprivate func updateButtonColorOnSelection() {
@@ -459,18 +443,17 @@ open class SMSwipeableTabViewController: UIViewController, UIPageViewControllerD
                 self.currentPageIndex = sender.tag
                 UIView.animate(withDuration: 0.05) { [unowned self] in
                     self.updateButtonColorOnSelection()
-                    self.segmentBarView.scrollRectToVisible(CGRect(x: self.buttonsFrameArray[self.currentPageIndex].origin.x, y: 0.0,  width: self.buttonsFrameArray[self.currentPageIndex].size.width, height: 44.0), animated: true)
+                    self.setupSelectionBar()
+                    self.segmentBarView.scrollRectToVisible(CGRect(x: self.buttonsFrameArray[self.currentPageIndex].origin.x, y: 0.0,  width: self.buttonsFrameArray[self.currentPageIndex].size.width, height: 40.0), animated: true)
                 }
             }
         })
     }
 
     //MARK : ScrollView Delegate Methods
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let xFromCenter:CGFloat = self.view.frame.size.width-scrollView.contentOffset.x
-        let xCoor = buttonsFrameArray[currentPageIndex].origin.x;
-        UIView.animate(withDuration: 0.05) { [unowned self] in
-            self.selectionBar.frame = CGRect(x: xCoor-xFromCenter/kSelectionBarSwipeConstant, y: self.selectionBar.frame.origin.y, width: self.buttonsFrameArray[self.currentPageIndex].size.width, height: self.selectionBar.frame.size.height)
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if buttonsFrameArray.count > 0 {
+            selectionBar.frame = CGRect(x: buttonsFrameArray[currentPageIndex].origin.x + (buttonsFrameArray[currentPageIndex].size.width-selectionBarWidth)/2, y: segementBarHeight - selectionBarHeight, width: selectionBarWidth, height: selectionBarHeight)
         }
     }
 }
